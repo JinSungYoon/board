@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.board.repository.UserRepository">
+
+    <select id="findAll" resultType="java.util.HashMap">
+        SELECT * from user
+    </select>
+
+    <select id="findById" resultType="com.project.board.domain.User">
+        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByLoginId" resultType="string">
+        SELECT login_id
+        FROM user
+        WHERE login_id = #{loginId}
+    </select>
+
+    <select id="findByLoginIdPassword" resultType="com.project.board.domain.User">
+        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
+        FROM user
+        WHERE login_id = #{loginId}
+        AND password = #{password}
+    </select>
+
+    <select id="findByNickName" resultType="com.project.board.domain.User">
+        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
+        FROM user
+        WHERE nick_name = #{nickName}
+    </select>
+
+    <insert id="insert" parameterType="com.project.board.domain.User">
+        INSERT INTO user
+        (user_id,login_id,password,nick_name,user_role_code,active_yn,create_date,update_date)
+        VALUES(
+        #{userId},
+        #{loginId},
+        #{password},
+        #{nickName},
+        #{userRoleCode},
+        IFNULL(#{activeYn},'Y'),
+        IFNULL(#{createDate}, NOW()),
+        IFNULL(#{updateDate}, NOW())
+        )
+    </insert>
+
+</mapper>
