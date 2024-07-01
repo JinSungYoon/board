@@ -10,10 +10,13 @@ public interface UserRepository {
 
     List<User> findAll();
     User findById(Long userId);
-    String findByLoginId(String loginId);
-    User findByLoginIdPassword(String loginId, String password);
 
+    // 회원가입
+    User findByLoginId(String loginId);
+
+    // 회원 조회
     User findByNickName(String nickName);
 
+    // 회원가입
     void insert(User user);
 }

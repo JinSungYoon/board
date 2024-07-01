@@ -10,9 +10,11 @@ public class UserMapper {
                 .userId(user.getUserId())
                 .loginId(user.getLoginId())
                 .password(user.getPassword())
+                .salt(user.getSalt())
                 .nickName(user.getNickName())
                 .userRoleCode(user.getUserRoleCode())
                 .activeYn(user.getActiveYn())
+                .deleteYn(user.getDeleteYn())
                 .createDate(user.getCreateDate())
                 .updateDate(user.getUpdateDate())
                 .build();
@@ -22,9 +24,11 @@ public class UserMapper {
         return User.builder()
                 .loginId(userDto.getLoginId())
                 .password(userDto.getPassword())
+                .salt(userDto.getSalt())
                 .nickName(userDto.getNickName())
                 .userRoleCode(userDto.getUserRoleCode())
                 .activeYn(userDto.getActiveYn())
+                .deleteYn(userDto.getDeleteYn())
                 .createDate(userDto.getCreateDate())
                 .updateDate(userDto.getUpdateDate())
                 .build();

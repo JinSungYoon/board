@@ -19,10 +19,12 @@ public class UserDTO {
     private String loginId;
     @Size(max = 20, message = "Password cannot be longer than 20 characters")
     private String password;
+    private String salt;
     @Size(max = 50, message = "Nick Name cannot be longer than 50 characters")
     private String nickName;
     private UserRoleCode userRoleCode;
     private char activeYn;
+    private char deleteYn;
     private LocalDateTime createDate;
     private LocalDateTime updateDate;
 
@@ -30,18 +32,21 @@ public class UserDTO {
     public UserDTO(UserDTO.UserDTOBuilder builder) {
         this.loginId = builder.loginId;
         this.password = builder.password;
+        this.salt = builder.salt;
         this.nickName = builder.nickName;
         this.userRoleCode = builder.userRoleCode;
         this.activeYn = builder.activeYn;
+        this.deleteYn = builder.deleteYn;
         this.createDate = builder.createDate;
         this.updateDate = builder.updateDate;
     }
 
     // ID와 Password 있는 Builder(Member)
-    public static UserDTO.UserDTOBuilder memberBuilder(String loginId, String password, String nickName) {
+    public static UserDTO.UserDTOBuilder memberBuilder(String loginId, String password, String salt, String nickName) {
         return new UserDTO.UserDTOBuilder()
                 .loginId(loginId)
                 .password(password)
+                .salt(salt)
                 .nickName(nickName)
                 .userRoleCode(UserRoleCode.MEB)
                 .activeYn('Y')
@@ -52,9 +57,10 @@ public class UserDTO {
 
     // ID와 Password 없는 Builder(Guest)
     public static UserDTO.UserDTOBuilder guestBuilder(String nickName) {
-        return new UserDTO.UserDTOBuilder()
+        return new UserDTOBuilder()
                 .loginId(LoginIdGenerator.generateLoginId())
                 .password("")
+                .salt("")
                 .nickName(nickName)
                 .userRoleCode(UserRoleCode.GST)
                 .activeYn('Y')
@@ -68,8 +74,10 @@ public class UserDTO {
         if (o == null || getClass() != o.getClass()) return false;
         UserDTO userDto = (UserDTO) o;
         return activeYn == userDto.activeYn &&
+                deleteYn == userDto.deleteYn &&
                 Objects.equals(loginId, userDto.loginId) &&
                 Objects.equals(password, userDto.password) &&
+                Objects.equals(salt, userDto.salt) &&
                 Objects.equals(nickName, userDto.nickName) &&
                 userRoleCode == userDto.userRoleCode &&
                 Objects.equals(createDate, userDto.createDate) &&
@@ -78,7 +86,7 @@ public class UserDTO {
 
     @Override
     public int hashCode() {
-        return Objects.hash(loginId, password, nickName, userRoleCode, activeYn, createDate, updateDate);
+        return Objects.hash(loginId, password, salt, nickName, userRoleCode, activeYn, deleteYn, createDate, updateDate);
     }
 
 }

@@ -3,45 +3,53 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.project.board.repository.UserRepository">
 
-    <select id="findAll" resultType="java.util.HashMap">
+    <resultMap id="UserResultMap" type="com.project.board.domain.User">
+        <id property="userId" column="user_id"/>
+        <result property="loginId" column="login_id"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="userRoleCode" column="user_role_code"/>
+        <result property="activeYn" column="active_yn"/>
+        <result property="deleteYn" column="delete_yn"/>
+        <result property="createDate" column="create_date"/>
+        <result property="updateDate" column="update_date"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserResultMap">
         SELECT * from user
     </select>
 
-    <select id="findById" resultType="com.project.board.domain.User">
-        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
+    <select id="findById" resultMap="UserResultMap">
+        SELECT user_id,login_id,password,null,nick_name,user_role_code,active_yn,delete_yn,create_date,update_date
         FROM user
         WHERE user_id = #{userId}
     </select>
 
-    <select id="findByLoginId" resultType="string">
-        SELECT login_id
+    <select id="findByLoginId" resultMap="UserResultMap">
+        SELECT user_id,login_id,password,null,nick_name,user_role_code,active_yn,delete_yn,create_date,update_date
         FROM user
         WHERE login_id = #{loginId}
     </select>
 
-    <select id="findByLoginIdPassword" resultType="com.project.board.domain.User">
-        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
-        FROM user
-        WHERE login_id = #{loginId}
-        AND password = #{password}
-    </select>
-
-    <select id="findByNickName" resultType="com.project.board.domain.User">
-        SELECT user_id,login_id,null,nick_name,user_role_code,active_yn,create_date,update_date
+    <select id="findByNickName" resultMap="UserResultMap">
+        SELECT user_id,login_id,password,null,nick_name,user_role_code,active_yn,delete_yn,create_date,update_date
         FROM user
         WHERE nick_name = #{nickName}
     </select>
 
     <insert id="insert" parameterType="com.project.board.domain.User">
         INSERT INTO user
-        (user_id,login_id,password,nick_name,user_role_code,active_yn,create_date,update_date)
+        (user_id,login_id,password,salt,nick_name,user_role_code,active_yn,delete_yn,create_date,update_date)
         VALUES(
         #{userId},
         #{loginId},
         #{password},
+        #{salt},
         #{nickName},
         #{userRoleCode},
         IFNULL(#{activeYn},'Y'),
+        IFNULL(#{deleteYn},'Y'),
         IFNULL(#{createDate}, NOW()),
         IFNULL(#{updateDate}, NOW())
         )
